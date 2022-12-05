@@ -18,7 +18,6 @@ import com.movie.movieonline.domain.Genre;
 import com.movie.movieonline.domain.Movie;
 import com.movie.movieonline.service.GenreService;
 import com.movie.movieonline.service.MovieService;
-import com.movie.movieonline.util.MessageResponse;
 import com.movie.movieonline.util.TVSeriesRequest;
 
 @RestController
