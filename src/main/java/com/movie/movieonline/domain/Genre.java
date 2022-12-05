@@ -4,18 +4,13 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.*;
 
 @Entity
 @Table(name="genres")
 @Getter @Setter @NoArgsConstructor
-@JsonIdentityInfo(
-   generator = ObjectIdGenerators.PropertyGenerator.class,
-   property = "id")
 public class Genre {
     @Id
     @Column(name="id")

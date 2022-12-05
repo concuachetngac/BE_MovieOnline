@@ -19,6 +19,7 @@ import com.movie.movieonline.domain.Movie;
 import com.movie.movieonline.service.GenreService;
 import com.movie.movieonline.service.MovieService;
 import com.movie.movieonline.util.MessageResponse;
+import com.movie.movieonline.util.TVSeriesRequest;
 
 @RestController
 @RequestMapping("/api/movies")
@@ -39,11 +40,8 @@ public class MovieController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("save/all/{is_movie}")
-    public ResponseEntity<?> saveAllMovies(@RequestBody List<Movie> moviesList, @PathVariable("is_movie") int isMovie){
-        if(isMovie != 0 && isMovie!=1){
-            return new ResponseEntity<MessageResponse>(new MessageResponse("Some error !!!"), HttpStatus.BAD_REQUEST);  
-        }
+    @PostMapping("save/all/movie")
+    public ResponseEntity<?> saveAllMovies(@RequestBody List<Movie> moviesList){
         for(Movie movie:moviesList){
             List<Long> idList = movie.getGenre_ids();
             List<Genre> genresList = new ArrayList<>();
@@ -51,10 +49,34 @@ public class MovieController {
                 genresList.add(genreService.getGenreById(id));
             }
             movie.setGenres(genresList);
-            movie.setIsMovie(isMovie);
+            movie.setIsMovie(1);
             movieService.addMovie(movie);
         }
         return new ResponseEntity<List<Movie>>(moviesList, HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("save/all/tv")
+    public ResponseEntity<?> saveAllTV(@RequestBody List<TVSeriesRequest> moviesList){
+        for(TVSeriesRequest tv:moviesList){
+            List<Long> idList = tv.getGenre_ids();
+            List<Genre> genresList = new ArrayList<>();
+            for(long id:idList){
+                genresList.add(genreService.getGenreById(id));
+            }
+            Movie movie = new Movie();
+            movie.setBackdrop_path(tv.getBackdrop_path());
+            movie.setPoster_path(tv.getPoster_path());
+            movie.setId(tv.getId());
+            movie.setTitle(tv.getName());
+            movie.setVote_average(tv.getVote_average());
+            movie.setRelease_date(tv.getFirst_air_date());
+            movie.setOverview(tv.getOverview());
+            movie.setGenres(genresList);
+            movie.setIsMovie(0);
+            movieService.addMovie(movie);
+        }
+        return new ResponseEntity<List<TVSeriesRequest>>(moviesList, HttpStatus.CREATED);
     }
 
     @GetMapping("all")

@@ -44,6 +44,9 @@ public class Movie {
     @Column(name="backdrop_path")
     private String backdrop_path;
 
+    @Column(name="overview")
+    private String overview;
+
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Long> genre_ids;
