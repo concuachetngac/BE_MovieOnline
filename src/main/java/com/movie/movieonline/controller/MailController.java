@@ -44,24 +44,4 @@ public class MailController {
 
         return new ResponseEntity<MessageResponse> (new MessageResponse("New Password Sent"), HttpStatus.OK);
     }
-
-    @PutMapping("password/change")
-    public ResponseEntity<?> changePassword(@RequestBody User username){
-
-        User user = userService.loadUserByUsername(username.getUsername());
-
-        int length = 6;
-        String generatedPassword = RandomStringUtils.random(length, true, true);
-        
-        userService.changePassword(generatedPassword, user.getId());
-
-        SimpleMailMessage message = new SimpleMailMessage(); 
-        message.setFrom("ductuantran2410@gmail.com");
-        message.setTo(user.getUsername()); 
-        message.setSubject("New Password"); 
-        message.setText("This is your new password: " + generatedPassword);
-        emailSender.send(message);
-
-        return new ResponseEntity<MessageResponse> (new MessageResponse("New Password Sent"), HttpStatus.OK);
-    }
 }
