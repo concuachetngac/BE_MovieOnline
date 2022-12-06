@@ -2,6 +2,7 @@ package com.movie.movieonline.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.movie.movieonline.domain.User;
@@ -14,6 +15,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+	PasswordEncoder encoder;
 
     @Override
     public void deleteUser(Long userId) {
@@ -35,5 +39,13 @@ public class UserServiceImpl implements UserService{
 
 		return user;
 	}
+
+    @Override
+    public void changePassword(String newPass, Long id) {
+        User existingUser = userRepository.findById(id).orElseThrow(() -> 
+                                new ResourceNotFoundException("User", "Id", id));
+        existingUser.setPassword(encoder.encode(newPass));
+        userRepository.save(existingUser);
+    }
 
 }
