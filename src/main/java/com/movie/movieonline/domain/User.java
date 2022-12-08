@@ -18,7 +18,7 @@ import lombok.*;
 @Table(name="users")
 @JsonIdentityInfo(
    generator = ObjectIdGenerators.PropertyGenerator.class,
-   property = "id")
+   property = "username")
 @Getter @Setter @NoArgsConstructor
 public class User {
     @Id

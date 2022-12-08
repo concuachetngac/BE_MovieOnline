@@ -17,7 +17,6 @@ import com.movie.movieonline.service.impl.UserDetailsImpl;
 import com.movie.movieonline.util.LoginRequest;
 import com.movie.movieonline.util.MessageResponse;
 
-//@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
