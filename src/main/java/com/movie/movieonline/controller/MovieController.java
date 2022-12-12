@@ -1,6 +1,8 @@
 package com.movie.movieonline.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -80,7 +82,15 @@ public class MovieController {
 
     @GetMapping("all")
     public List<Movie> getAllMovies(){
-        return movieService.getAllMovies();
+        List<Movie> myList =movieService.getAllMovies();
+        Collections.sort(myList, new Comparator<Movie>() {
+            public int compare(Movie o1, Movie o2) {
+                if (o1.getRelease_date() == null || o2.getRelease_date() == null)
+                  return 0;
+                return o2.getRelease_date().compareTo(o1.getRelease_date());
+            }
+          });
+        return myList;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
