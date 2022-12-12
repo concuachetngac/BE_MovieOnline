@@ -99,6 +99,18 @@ public class MovieController {
         return myList;
     }
 
+    @GetMapping("find/{movieName}")
+    public List<Movie> findMovieByName(@PathVariable("movieName") String movieName){
+        List<Movie> myList =movieService.getAllMovies();
+        List<Movie> findList = new ArrayList<>();
+        for(Movie m:myList){
+            if(m.getTitle().toLowerCase().contains(movieName)){
+                findList.add(m);
+            }
+        }
+        return findList;
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<String> deleteMovie(@PathVariable("id") long movieId){
