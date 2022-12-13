@@ -24,7 +24,7 @@ public class GenreServiceImpl implements GenreService {
     public Boolean checkGenre(Long genreId) {
         try{
             genreRepository.findById(genreId).orElseThrow(() -> 
-                new ResourceNotFoundException("Book", "Id", genreId));
+                new ResourceNotFoundException("Genre", "Id", genreId));
             return true;
         } catch(ResourceNotFoundException e) {
             return false;
@@ -39,7 +39,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public Genre getGenreById(Long genreId) {
         return genreRepository.findById(genreId).orElseThrow(() -> 
-            new ResourceNotFoundException("Book", "Id", genreId));
+            new ResourceNotFoundException("Genre", "Id", genreId));
     }
 
     @Override

@@ -1,10 +1,15 @@
 package com.movie.movieonline.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +46,19 @@ public class UserController {
         userService.changePassword(userPassword.getPassword(), user.getId());
 
         return new ResponseEntity<MessageResponse> (new MessageResponse("Password Changed"), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("all")
+    public ResponseEntity<?> getAllUserDetail(){
+        return new ResponseEntity<List<UserDetailsImpl>> (userService.getAllUserInfo(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") long id){
+        userService.deleteUser(id);
+        return new ResponseEntity<MessageResponse> (new MessageResponse("Delete User Successful"), HttpStatus.OK);
     }
 
 
